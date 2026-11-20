@@ -100,7 +100,10 @@ export const CursorFollower = () => {
 
   return (
     <div aria-hidden="true">
-      <div ref={dotAnchorRef} className="cursor-anchor invisible">
+      <div
+        ref={dotAnchorRef}
+        className="cursor-anchor cursor-anchor-blend invisible"
+      >
         <div ref={dotRef} className="cursor-dot" data-state="idle" />
       </div>
       <div ref={labelAnchorRef} className="cursor-anchor invisible">

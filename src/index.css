@@ -408,11 +408,16 @@ dialog {
   translate: -50% -50%;
 }
 
+/* 색 반전은 바깥 요소에 건다. .cursor-anchor는 fixed + z-index라 쌓임 맥락을 새로 만들고,
+   안쪽 점에 mix-blend-mode를 걸면 섞을 대상이 그 맥락 안에만 있어 그냥 흰 원으로 그려진다. */
+.cursor-anchor-blend {
+  mix-blend-mode: difference;
+}
+
 .cursor-dot {
   width: 14px;
   height: 14px;
   background: #fff;
-  mix-blend-mode: difference;
   transition:
     scale 0.35s var(--ease-out),
     opacity 0.25s;

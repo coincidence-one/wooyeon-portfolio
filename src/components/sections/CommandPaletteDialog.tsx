@@ -1,4 +1,11 @@
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from 'react';
 import { ArrowUpRight, Copy, Moon, Search, Sun } from 'lucide-react';
 import { ENGINEER_PROFILE } from '../../data/portfolioData';
 import type { ResolvedColorScheme } from '../../hooks/useThemeScheme';
@@ -37,8 +44,12 @@ export const CommandPaletteDialog = ({
 }: CommandPaletteDialogProps) => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
   const titleId = useId();
+  const listId = useId();
   const [query, setQuery] = useState<string>('');
+  // 화살표 키로 고른 항목. Enter를 누르면 이 항목이 실행된다.
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -46,6 +57,7 @@ export const CommandPaletteDialog = ({
 
     if (isOpen) {
       setQuery('');
+      setActiveIndex(0);
       if (!dialog.open) {
         dialog.showModal();
       }
@@ -184,6 +196,34 @@ export const CommandPaletteDialog = ({
     );
   }, [commands, query]);
 
+  // 걸러진 결과가 줄어 고른 자리가 사라지면 마지막 항목으로 당긴다
+  const safeIndex = Math.min(activeIndex, Math.max(filtered.length - 1, 0));
+  const optionId = (index: number) => `${listId}-option-${index}`;
+
+  useEffect(() => {
+    if (!isOpen) return;
+    listRef.current
+      ?.querySelector<HTMLElement>('[data-active="true"]')
+      ?.scrollIntoView({ block: 'nearest' });
+  }, [isOpen, safeIndex, filtered]);
+
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // 한글을 조합하는 중의 Enter는 글자를 확정하는 키라서 건드리지 않는다
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+    if (filtered.length === 0) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex((safeIndex + 1) % filtered.length);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex((safeIndex - 1 + filtered.length) % filtered.length);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      filtered[safeIndex]?.onSelect();
+    }
+  };
+
   return (
     <dialog
       ref={dialogRef}
@@ -202,26 +242,41 @@ export const CommandPaletteDialog = ({
           ref={inputRef}
           type="search"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="어디로 갈까요? 프로젝트, 경력, 이메일…"
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setActiveIndex(0);
+          }}
+          onKeyDown={handleInputKeyDown}
+          role="combobox"
+          aria-expanded="true"
+          aria-controls={listId}
+          aria-activedescendant={
+            filtered.length > 0 ? optionId(safeIndex) : undefined
+          }
+          placeholder="어디로 갈까요? 프로젝트, 설계 노트, 이메일…"
           className="w-full bg-transparent text-[1rem] text-[var(--ink)] placeholder:text-[var(--ink-muted)] focus:outline-none"
         />
         <Keycap>Esc</Keycap>
       </div>
 
-      <div className="max-h-[380px] overflow-y-auto p-2">
+      <div ref={listRef} className="max-h-[380px] overflow-y-auto p-2">
         {filtered.length === 0 ? (
           <div className="px-3 py-8 text-center text-sm text-[var(--ink-muted)]">
             일치하는 항목이 없습니다.
           </div>
         ) : (
-          <div className="space-y-1">
-            {filtered.map((cmd) => (
+          <div id={listId} role="listbox" className="space-y-1">
+            {filtered.map((cmd, index) => (
               <button
                 key={cmd.id}
+                id={optionId(index)}
                 type="button"
+                role="option"
+                aria-selected={index === safeIndex}
+                data-active={index === safeIndex}
                 onClick={cmd.onSelect}
-                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-[0.9375rem] transition-colors hover:bg-[var(--surface)]"
+                onPointerMove={() => setActiveIndex(index)}
+                className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-[0.9375rem] transition-colors data-[active=true]:bg-[var(--surface)]"
               >
                 <div className="min-w-0">
                   <div className="truncate font-medium text-[var(--ink)]">
@@ -252,7 +307,7 @@ export const CommandPaletteDialog = ({
       </div>
 
       <div className="flex items-center justify-between border-t border-[var(--border)] bg-[var(--surface)]/60 px-4 py-2.5 text-xs text-[var(--ink-muted)]">
-        <span>빠른 이동</span>
+        <span>↑↓ 이동 · Enter 실행</span>
         <span>⌘K 로 언제든 열 수 있습니다</span>
       </div>
     </dialog>
