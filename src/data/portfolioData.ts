@@ -433,7 +433,7 @@ export const GITHUB_ARCHIVE_PROJECTS: ArchiveRepoItem[] = [
     language: 'TypeScript',
     description:
       '캐릭터를 배치하면 알아서 싸우는 오토배틀 게임. 시너지 조합과 웨이브 전투가 있습니다.',
-    githubUrl: 'https://github.com/coincidence-one/chiikawa-auto-chess',
+    githubUrl: 'https://github.com/coincidence-one',
   },
   {
     id: 'saas-subscription-starter',
