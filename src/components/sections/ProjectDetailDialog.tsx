@@ -139,6 +139,7 @@ export const ProjectDetailDialog = ({
     <dialog
       ref={dialogRef}
       closedby="any"
+      data-lenis-prevent
       aria-labelledby={titleId}
       className="m-auto max-h-[88vh] w-[94vw] max-w-[760px] overflow-y-auto rounded-2xl border border-line-strong p-0 shadow-[0_30px_90px_rgb(0_0_0/0.28)]"
     >

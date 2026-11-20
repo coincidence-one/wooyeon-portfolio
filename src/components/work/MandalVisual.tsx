@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { EASE_OUT, gsap, MOTION_OK, useGSAP } from '../../motion/gsap';
 import { Check, Pause, Play } from 'lucide-react';
 import { OHTANI_CORE_GOAL, OHTANI_PILLARS } from '../../data/portfolioData';
 import { useAutoplayInView } from '../../hooks/useAutoplayInView';
@@ -35,6 +36,29 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
 
   useAutoplayInView(videoRef);
 
+  // 주제를 바꾸면 오른쪽 여덟 칸이 가운데에서 바깥으로 퍼지며 바뀐다
+  const boardRef = useRef<HTMLDivElement | null>(null);
+  const isFirstPillarRef = useRef<boolean>(true);
+  useGSAP(
+    () => {
+      if (isFirstPillarRef.current) {
+        isFirstPillarRef.current = false;
+        return;
+      }
+      const mm = gsap.matchMedia(boardRef);
+      mm.add(MOTION_OK, () => {
+        gsap.from('[data-action-cell]', {
+          scale: 0.72,
+          autoAlpha: 0,
+          duration: 0.5,
+          ease: EASE_OUT,
+          stagger: { each: 0.035, grid: [3, 3], from: 'center' },
+        });
+      });
+    },
+    { scope: boardRef, dependencies: [pillarIndex] }
+  );
+
   const speed =
     SPIN_SPEEDS.find((item) => item.id === speedId) ?? SPIN_SPEEDS[1];
   const pillar = OHTANI_PILLARS[pillarIndex];
@@ -57,7 +81,10 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-3xl bg-[#0b0c0e]">
+      <div
+        data-reveal="expand"
+        className="overflow-hidden rounded-3xl bg-[#0b0c0e] ring-1 ring-line"
+      >
         <div className="aspect-video">
           {/* 영상은 숨기기만 해서 보던 위치가 유지되게 한다 */}
           <video
@@ -128,8 +155,12 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
         </p>
       </div>
 
-      <div className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-12">
-        <div className="flex flex-col items-center justify-between rounded-3xl bg-[#0b0c0e] px-6 py-10 lg:col-span-5">
+      <div
+        ref={boardRef}
+        data-reveal="stagger"
+        className="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-12"
+      >
+        <div className="flex flex-col items-center justify-between rounded-3xl bg-[#0b0c0e] px-6 py-10 ring-1 ring-line lg:col-span-5">
           <StudioBaseballCanvas
             rpmSpeed={speed.rpm}
             isPaused={isPaused}
@@ -217,7 +248,7 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
                     className={cn(
                       'flex min-h-[4.75rem] cursor-pointer items-center justify-center rounded-lg p-2 text-center text-[0.8125rem] leading-snug font-semibold transition-colors',
                       isSelected
-                        ? 'bg-accent text-white'
+                        ? 'bg-accent text-bg'
                         : 'bg-bg text-ink-2 hover:text-ink'
                     )}
                   >
@@ -233,7 +264,7 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
                   return (
                     <div
                       key="pillar"
-                      className="flex min-h-[4.75rem] items-center justify-center rounded-lg bg-accent p-2 text-center text-[0.8125rem] leading-snug font-bold text-white"
+                      className="flex min-h-[4.75rem] items-center justify-center rounded-lg bg-accent p-2 text-center text-[0.8125rem] leading-snug font-bold text-bg"
                     >
                       {pillar.title}
                     </div>
@@ -246,6 +277,7 @@ export const MandalVisual = ({ project }: MandalVisualProps) => {
                   <button
                     key={action}
                     type="button"
+                    data-action-cell
                     onClick={() => toggleAction(action)}
                     aria-pressed={isDone}
                     className={cn(

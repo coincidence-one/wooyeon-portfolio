@@ -4,6 +4,7 @@ import { ENGINEER_PROFILE } from '../../data/portfolioData';
 import type { ResolvedColorScheme } from '../../hooks/useThemeScheme';
 import type { FlagshipProject } from '../../types/portfolio';
 import { Keycap } from '../common/Keycap';
+import { scrollToTarget } from '../../motion/smoothScroll';
 
 export interface CommandPaletteDialogProps {
   isOpen: boolean;
@@ -125,7 +126,7 @@ export const CommandPaletteDialog = ({
         hint: '#work',
         keywords: 'work projects 피치마켓 별마실 하고-만달 하고만달 hago mandal 만다라트 오타니 야구공',
         onSelect: runAndClose(() => {
-          document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
+          scrollToTarget('#work');
         }),
       },
       {
@@ -135,7 +136,7 @@ export const CommandPaletteDialog = ({
         hint: '#index',
         keywords: 'github archive index kakao 카톡 오토체스 결제',
         onSelect: runAndClose(() => {
-          document.getElementById('index')?.scrollIntoView({ behavior: 'smooth' });
+          scrollToTarget('#index');
         }),
       },
       ...projectCommands,
@@ -187,6 +188,7 @@ export const CommandPaletteDialog = ({
     <dialog
       ref={dialogRef}
       closedby="any"
+      data-lenis-prevent
       aria-labelledby={titleId}
       className="mx-auto mt-[12vh] w-[92vw] max-w-[540px] overflow-hidden rounded-2xl border border-[var(--border-strong)] p-0 shadow-[0_30px_90px_rgb(0_0_0/0.28)]"
     >

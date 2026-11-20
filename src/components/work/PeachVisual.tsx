@@ -14,8 +14,11 @@ export const PeachVisual = ({ project }: PeachVisualProps) => {
 
   return (
     <div className="space-y-5">
-      <div className="overflow-hidden rounded-3xl bg-[color-mix(in_srgb,#f97272_16%,var(--surface))] px-5 pt-8 sm:px-10 sm:pt-12">
-        <div className="relative">
+      <div
+        data-reveal="expand"
+        className="overflow-hidden rounded-3xl bg-[color-mix(in_srgb,#f97272_16%,var(--surface))] px-5 pt-8 sm:px-10 sm:pt-12"
+      >
+        <div data-reveal-inner className="relative origin-top">
           <BrowserFrame
             url="peachmarket.app/ko/marketplace/city/duluth"
             className="lg:mr-[14%]"
@@ -27,15 +30,15 @@ export const PeachVisual = ({ project }: PeachVisualProps) => {
               className="block w-full"
             />
           </BrowserFrame>
-          <PhoneFrame
-            src={liveMobile.src}
-            alt={liveMobile.caption}
-            className="absolute right-0 bottom-0 hidden w-[24%] translate-y-[18%] lg:block"
-          />
+          <div className="absolute right-0 bottom-0 hidden w-[24%] translate-y-[18%] lg:block">
+            <div data-parallax="16">
+              <PhoneFrame src={liveMobile.src} alt={liveMobile.caption} />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+      <div data-reveal="stagger" className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <figure className="rounded-3xl bg-surface p-5 sm:p-8 lg:col-span-7">
           <BrowserFrame url="peachmarket.app/ko">
             <img
@@ -62,7 +65,10 @@ export const PeachVisual = ({ project }: PeachVisualProps) => {
       </div>
 
       <div className="rounded-3xl bg-[color-mix(in_srgb,#f97272_16%,var(--surface))] px-5 py-8 sm:px-10 sm:py-10">
-        <div className="mx-auto grid max-w-[720px] grid-cols-3 gap-x-5 sm:gap-x-8">
+        <div
+          data-reveal="stagger"
+          className="mx-auto grid max-w-[720px] grid-cols-3 gap-x-5 sm:gap-x-8"
+        >
           <figure>
             <PhoneFrame src={liveMobile.src} alt={liveMobile.caption} />
             <Caption step="3">{liveMobile.caption}</Caption>

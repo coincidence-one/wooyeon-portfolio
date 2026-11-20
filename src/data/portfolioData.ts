@@ -16,6 +16,14 @@ export const ENGINEER_PROFILE = {
   blog: 'https://coincidence-one.tistory.com',
 } as const;
 
+/**
+ * 첫 화면 아래를 흘러가는 글자 띠. 주로 쓰는 기술만 넣는다.
+ */
+export const STACK_MARQUEE_ROWS = [
+  ['React', 'TypeScript', 'Next.js', 'Vite', 'TanStack Query', 'Tailwind CSS'],
+  ['NestJS', 'PostgreSQL', 'React Native', 'GitHub Actions', 'Docker', 'nginx', 'Cloudflare'],
+] as const;
+
 export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
   {
     id: 'peachmarket',
@@ -48,53 +56,29 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
       { date: '2026.10', label: 'SSR 전환, AI 사진 일괄 등록' },
       { date: '2026.11', label: '429가 404로 나가던 버그 수정' },
     ],
-    figures: [
-      {
-        value: '1 → 423',
-        unit: '개',
-        label: '검색엔진이 읽을 수 있는 페이지',
-        note: '유입 효과는 아직 관측 중',
-      },
-      {
-        value: '36',
-        unit: '초',
-        label: '사진 8장 → 매물 초안 4개',
-        note: 'staging에서 한 번 잰 값',
-      },
-      {
-        value: '$50',
-        label: 'AI 호출 월 예산 상한',
-      },
-      {
-        value: '165 → 0',
-        unit: '건',
-        label: '멀쩡한 페이지가 404로 나간 수',
-        note: '사이트맵 425개 동시 요청 재현 기준',
-      },
-    ],
     stories: [
       {
-        title: 'SSR 전환과 지역 랜딩 144개',
+        title: '실시간 채팅',
+        summary: '읽음 표시, 스와이프 답장, 오프라인 전송과 재연결. Socket.io.',
+        reference: '2026.02 — 04 · PR #12 · #104 · #132 · #222',
+      },
+      {
+        title: 'iOS 앱 출시',
         summary:
-          '스켈레톤만 내려가던 홈, 상세, 커뮤니티를 서버 렌더링으로 전환.',
-        reference: 'PR #489 · #490',
+          'WebView로 시작해 네이티브 화면으로 옮김. Apple 로그인, Privacy Manifest 등 App Store 심사 대응.',
+        reference: '2026.05 · PR #258 · #262 · #294',
       },
       {
         title: '사진 30장 일괄 등록',
         summary:
-          'Claude 비전이 사진을 물건별로 묶어 매물 초안 작성. 월 예산 가드 포함.',
-        reference: 'PR #491 · #493 · #495',
+          'Claude 비전이 사진을 물건별로 묶어 매물 초안 작성. 월 $50 예산 가드.',
+        reference: '2026.10 · PR #491 · #493 · #495',
       },
       {
-        title: '429를 404로 내보내던 상세 페이지',
+        title: '검색에 잡히는 페이지',
         summary:
-          'rate limit에 걸린 SSR 응답을 5xx로 바꿔 색인 탈락을 막음.',
-        reference: 'PR #552',
-      },
-      {
-        title: '에이전트가 따르는 작업 규칙',
-        summary:
-          'CLAUDE.md에 보안 체크리스트와 웹·앱 미러링 정책을 정리. PR에 검증 결과 기록.',
+          '스켈레톤만 내려가던 화면을 SSR로 전환, 지역 랜딩 144개 추가. 검색엔진이 읽을 수 있는 페이지 1 → 423개.',
+        reference: '2026.10 · PR #489 · #490',
       },
     ],
     designNote:
@@ -165,43 +149,21 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
       'Claude Artifact',
       'Vercel',
     ],
-    figures: [
-      {
-        value: '1',
-        unit: '개 파일',
-        label: 'game.html 하나로 두 환경에서 실행',
-      },
-      {
-        value: '0',
-        unit: 'KB',
-        label: '음원 파일',
-      },
-      {
-        value: '5 → 1',
-        unit: '회/초',
-        label: '사람이 몰릴 때 위치 전송 주기',
-      },
-      {
-        value: '180',
-        unit: '명',
-        label: '동시 접속 상한',
-        note: '한도에서 계산한 설계값',
-      },
-    ],
     stories: [
       {
         title: 'Realtime 한도 안의 위치 동기화',
         summary:
-          '행성별 채널 분리, 인원에 따른 전송 주기 조절, 180명부터 대기열.',
+          '행성별 채널 분리. 사람이 몰리면 위치 전송을 초당 5회에서 1회로 줄이고 180명부터 대기열.',
       },
       {
         title: '파일 하나로 두 환경',
         summary:
-          'window.claude 유무로 아티팩트 저장소와 Supabase를 갈아 끼우는 어댑터.',
+          'game.html 하나가 Claude 아티팩트와 Vercel에서 그대로 실행. window.claude 유무로 저장소를 갈아 끼우는 어댑터.',
       },
       {
         title: '음원 없이 내는 소리',
-        summary: '배경음과 효과음을 Web Audio 오실레이터로 합성.',
+        summary:
+          '배경음과 효과음을 Web Audio 오실레이터로 합성. 음원 파일은 없음.',
       },
     ],
     designNote:
@@ -264,23 +226,6 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
       'Lenis',
       'Framer Motion',
       'Tailwind CSS',
-    ],
-    figures: [
-      {
-        value: '21',
-        unit: '장',
-        label: '스크롤에 맞춰 넘기는 사진',
-      },
-      {
-        value: '108',
-        unit: '땀',
-        label: '수식으로 그린 실밥',
-      },
-      {
-        value: '81',
-        unit: '칸',
-        label: '서로 묶인 9×9 만다라트',
-      },
     ],
     stories: [
       {

@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
+import { useScrollMotion } from '../../motion/useScrollMotion';
 import { cn } from '../../utils/cn';
 
 export interface SectionHeaderProps {
@@ -16,8 +17,12 @@ export const SectionHeader = ({
   lede,
   className,
 }: SectionHeaderProps) => {
+  const rootRef = useRef<HTMLElement | null>(null);
+  useScrollMotion(rootRef);
+
   return (
     <header
+      ref={rootRef}
       className={cn(
         'grid grid-cols-1 gap-x-10 gap-y-5 lg:grid-cols-12 lg:items-end',
         className
@@ -30,7 +35,10 @@ export const SectionHeader = ({
           </span>
           <span>{label}</span>
         </p>
-        <h2 className="mt-3 text-[clamp(2rem,4.8vw,3.75rem)] leading-[1.12] font-bold tracking-[-0.04em]">
+        <h2
+          data-reveal="lines"
+          className="mt-3 text-[clamp(2rem,4.8vw,3.75rem)] leading-[1.12] font-bold tracking-[-0.04em]"
+        >
           {title}
         </h2>
       </div>

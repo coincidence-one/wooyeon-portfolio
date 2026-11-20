@@ -18,8 +18,24 @@
   --color-accent: var(--accent);
 }
 
+
+/* 색 토큰을 <color>로 등록해 두면 값이 바뀔 때 CSS transition이 걸린다.
+   프로젝트마다 페이지 색이 바뀌는 연출(data-world)에 쓴다 */
+@property --bg { syntax: '<color>'; inherits: true; initial-value: #f4f1ea; }
+@property --surface { syntax: '<color>'; inherits: true; initial-value: #eae6dc; }
+@property --surface-elevated { syntax: '<color>'; inherits: true; initial-value: #fbf9f4; }
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #191713; }
+@property --ink-secondary { syntax: '<color>'; inherits: true; initial-value: #4f4a42; }
+@property --ink-muted { syntax: '<color>'; inherits: true; initial-value: #736d62; }
+@property --border { syntax: '<color>'; inherits: true; initial-value: #dcd6c9; }
+@property --border-strong { syntax: '<color>'; inherits: true; initial-value: #c2bbab; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #c9401f; }
+
 @layer base {
   :root {
+    --ease-world: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
     /* 종이색 바탕 + 먹색 글자 + 감색 포인트 하나 */
     --bg-light: #f4f1ea;
     --bg-dark: #121110;
@@ -96,6 +112,61 @@
 
     accent-color: var(--accent);
     scroll-padding-top: 5rem;
+    scrollbar-color: var(--border-strong) transparent;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        --bg 0.9s var(--ease-world),
+        --surface 0.9s var(--ease-world),
+        --surface-elevated 0.9s var(--ease-world),
+        --ink 0.9s var(--ease-world),
+        --ink-secondary 0.9s var(--ease-world),
+        --ink-muted 0.9s var(--ease-world),
+        --border 0.9s var(--ease-world),
+        --border-strong 0.9s var(--ease-world),
+        --accent 0.9s var(--ease-world);
+    }
+
+    /* 테마를 바꿀 때는 View Transition이 화면을 넘기므로 색 전환을 끈다 */
+    &.theme-switching {
+      transition: none;
+    }
+  }
+
+  /* 프로젝트 구간에 들어서면 페이지 전체가 그 프로젝트의 색으로 바뀐다 */
+  :root[data-world='peachmarket'] {
+    --bg: light-dark(#fbe6dd, #1f1210);
+    --surface: light-dark(#f5d3c6, #2c1915);
+    --surface-elevated: light-dark(#fff5f0, #36201b);
+    --border: light-dark(#ecc0b0, #48291f);
+    --border-strong: light-dark(#d99a85, #6d3e31);
+    --ink-secondary: light-dark(#5a443c, #cdb5ab);
+    --ink-muted: light-dark(#86675c, #9c8177);
+    --accent: light-dark(#d5381b, #ff8f6b);
+  }
+
+  :root[data-world='tiny-orbits'] {
+    --bg: #070a1c;
+    --surface: #10163a;
+    --surface-elevated: #182049;
+    --ink: #eef1ff;
+    --ink-secondary: #bcc2e4;
+    --ink-muted: #8a91bd;
+    --border: #232a58;
+    --border-strong: #3e4888;
+    --accent: #ffab3d;
+  }
+
+  :root[data-world='hago-mandal'] {
+    --bg: #0a0b0d;
+    --surface: #16181c;
+    --surface-elevated: #1f2227;
+    --ink: #f4f0e6;
+    --ink-secondary: #c6c2b7;
+    --ink-muted: #928e84;
+    --border: #2a2d33;
+    --border-strong: #464a52;
+    --accent: #f4b942;
   }
 
   body {
@@ -180,45 +251,6 @@
 .link-underline:hover {
   color: var(--accent);
   text-decoration-color: var(--accent);
-}
-
-/* 스크롤하면 살짝 올라오며 나타난다. 지원 브라우저 + 움직임 허용일 때만 */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    @keyframes rise-in {
-      from {
-        opacity: 0;
-        transform: translateY(28px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    .reveal {
-      animation: rise-in linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 40%;
-    }
-  }
-
-  @supports (animation-timeline: scroll()) {
-    @keyframes grow-scroll-progress {
-      from {
-        transform: scaleX(0);
-      }
-      to {
-        transform: scaleX(1);
-      }
-    }
-
-    #portfolio-scroll-progress {
-      transform-origin: 0 50%;
-      animation: grow-scroll-progress auto linear;
-      animation-timeline: scroll(root block);
-    }
-  }
 }
 
 /* 슬라이더 */
@@ -319,4 +351,116 @@ dialog {
   dialog::backdrop {
     transition-duration: 0.1s;
   }
+}
+
+/* ── 모션 ─────────────────────────────────────────────── */
+
+/* SplitText 마스크: 글자 아래위가 잘리지 않게 여유를 준다 */
+.split-char-mask,
+.split-line-mask {
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+}
+
+/* SplitText는 text-wrap: balance와 같이 쓰면 줄 계산이 어긋난다 */
+[data-reveal='lines'] {
+  text-wrap: wrap;
+}
+
+[data-reveal='chars'],
+.hero-line {
+  font-kerning: none;
+}
+
+/* 외곽선만 있는 큰 글자 */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--ink-muted);
+}
+
+/* 프로젝트 세계의 고정 배경 */
+.world-layer {
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-world);
+}
+
+:root[data-world='peachmarket'] .world-layer[data-layer='peachmarket'],
+:root[data-world='tiny-orbits'] .world-layer[data-layer='tiny-orbits'],
+:root[data-world='hago-mandal'] .world-layer[data-layer='hago-mandal'] {
+  opacity: 1;
+}
+
+/* 커서를 따라다니는 원 */
+.cursor-anchor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.cursor-dot,
+.cursor-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 999px;
+  translate: -50% -50%;
+}
+
+.cursor-dot {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  mix-blend-mode: difference;
+  transition:
+    scale 0.35s var(--ease-out),
+    opacity 0.25s;
+}
+
+.cursor-dot[data-state='link'] {
+  scale: 3.2;
+}
+
+.cursor-dot[data-state='label'] {
+  scale: 0;
+}
+
+.cursor-label {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  scale: 0;
+  transition: scale 0.45s var(--ease-out);
+}
+
+.cursor-label[data-visible='true'] {
+  scale: 1;
+}
+
+/* 테마 전환: 누른 자리에서 원이 퍼지며 새 테마가 드러난다 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* 작은 프로젝트 목록: 행 위로 먹색이 덮이면 글자색을 뒤집는다 */
+.flow-row [data-flow-text] {
+  transition: color 0.3s;
+}
+
+.flow-row[data-active='true'] [data-flow-text] {
+  color: var(--bg);
+  text-decoration-color: color-mix(in srgb, var(--bg) 45%, transparent);
 }

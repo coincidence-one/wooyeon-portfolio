@@ -90,7 +90,10 @@ export const OrbitsVisual = ({ project, onNotify }: OrbitsVisualProps) => {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-3xl bg-[#0b0d1a]">
+      <div
+        data-reveal="expand"
+        className="overflow-hidden rounded-3xl bg-[#0b0d1a] ring-1 ring-line"
+      >
         <div className="aspect-video">
           {/* 영상은 숨기기만 해서 보던 위치가 유지되게 한다 */}
           <video
@@ -162,7 +165,10 @@ export const OrbitsVisual = ({ project, onNotify }: OrbitsVisualProps) => {
       </div>
 
       {/* 직접 만져 볼 수 있는 두 가지 */}
-      <div className="mt-14 grid grid-cols-1 gap-x-10 gap-y-12 lg:grid-cols-2">
+      <div
+        data-reveal="stagger"
+        className="mt-14 grid grid-cols-1 gap-x-10 gap-y-12 lg:grid-cols-2"
+      >
         <div className="border-t border-line-strong pt-5">
           <p className="eyebrow">눌러 보세요</p>
           <h4 className="mt-2 text-[1.25rem] leading-snug font-bold tracking-[-0.02em]">

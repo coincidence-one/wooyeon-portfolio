@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" class="scroll-smooth">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,25 @@
             .setAttribute('content', stored);
         }
       } catch {}
+
+      // 첫 화면의 막이 뜨기 전에 내용이 먼저 보이지 않게 가린다.
+      // 스크립트가 늦거나 실패해도 4초 뒤에는 반드시 걷힌다.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('intro-pending');
+        setTimeout(() => {
+          document.documentElement.classList.remove('intro-pending');
+        }, 4000);
+      }
     </script>
+    <style>
+      html.intro-pending body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        background: light-dark(#191713, #f0ebe1);
+      }
+    </style>
     <title>원우연 — 프론트엔드 개발자</title>
     <meta
       name="description"
@@ -31,7 +49,7 @@
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
   </head>
-  <body class="overflow-x-hidden">
+  <body class="overflow-x-clip">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

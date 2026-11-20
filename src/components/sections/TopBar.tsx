@@ -1,10 +1,12 @@
+import { useRef, type MouseEvent } from 'react';
 import { Moon, Search, Sun } from 'lucide-react';
 import { ENGINEER_PROFILE } from '../../data/portfolioData';
 import type { ResolvedColorScheme } from '../../hooks/useThemeScheme';
+import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from '../../motion/gsap';
 
 export interface TopBarProps {
   resolvedScheme: ResolvedColorScheme;
-  onToggleTheme: () => void;
+  onToggleTheme: (origin?: { x: number; y: number }) => void;
   onOpenCommandPalette: () => void;
 }
 
@@ -19,8 +21,46 @@ export const TopBar = ({
   onToggleTheme,
   onOpenCommandPalette,
 }: TopBarProps) => {
+  const rootRef = useRef<HTMLElement | null>(null);
+
+  // 내려갈 때는 숨고, 조금이라도 올라오면 다시 나타난다
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root) return;
+      const mm = gsap.matchMedia(root);
+
+      mm.add(MOTION_OK, () => {
+        const slide = gsap.quickTo(root, 'yPercent', {
+          duration: 0.45,
+          ease: 'power3.out',
+        });
+        ScrollTrigger.create({
+          start: 0,
+          end: 'max',
+          onUpdate: (self) => {
+            const isHidden = self.direction === 1 && self.scroll() > 240;
+            slide(isHidden ? -100 : 0);
+          },
+        });
+      });
+    },
+    { scope: rootRef }
+  );
+
+  const handleToggleTheme = (event: MouseEvent<HTMLButtonElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    onToggleTheme({
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    });
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-bg/80 backdrop-blur-md">
+    <header
+      ref={rootRef}
+      className="sticky top-0 z-40 bg-bg/80 backdrop-blur-md"
+    >
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 sm:px-8">
         <a href="#top" className="flex items-baseline gap-2.5">
           <span className="text-[1.0625rem] font-bold tracking-[-0.02em] text-ink">
@@ -40,9 +80,13 @@ export const TopBar = ({
               <a
                 key={item.href}
                 href={item.href}
-                className="transition-colors hover:text-ink"
+                className="group/nav relative py-1 transition-colors hover:text-ink"
               >
                 {item.label}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 bottom-0 h-px origin-right scale-x-0 bg-accent transition-transform duration-500 ease-[var(--ease-out)] group-hover/nav:origin-left group-hover/nav:scale-x-100"
+                />
               </a>
             ))}
           </nav>
@@ -59,7 +103,7 @@ export const TopBar = ({
 
           <button
             type="button"
-            onClick={onToggleTheme}
+            onClick={handleToggleTheme}
             aria-label={
               resolvedScheme === 'dark'
                 ? '밝은 화면으로 바꾸기'

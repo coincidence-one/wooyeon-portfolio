@@ -17,14 +17,6 @@ export type ArchiveCategory =
   | 'product-saas'
   | 'interactive-native';
 
-/** 큰 숫자 하나와 그 숫자가 뜻하는 바. unit은 숫자 옆에 작게 붙는다. */
-export interface KeyFigure {
-  value: string;
-  unit?: string;
-  label: string;
-  note?: string;
-}
-
 /** 작업 하나를 제목과 한 줄로 적는다. */
 export interface WorkStory {
   title: string;
@@ -66,9 +58,6 @@ export interface FlagshipProject {
   appStoreUrl?: string;
   repoUrl?: string;
   stack: string[];
-  figures: KeyFigure[];
-  /** 맡은 범위를 숫자로 보여 준다 (웹·서버·모바일 등) */
-  scope?: KeyFigure[];
   /** 시간순으로 한 일. 날짜와 짧은 제목만 적는다 */
   milestones?: ProjectMilestone[];
   stories: WorkStory[];
