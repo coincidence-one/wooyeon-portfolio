@@ -1,0 +1,322 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif;
+  /* 숫자와 영문 강조용. 한글은 Pretendard로 떨어진다 */
+  --font-display: "Instrument Serif", "Pretendard Variable", Pretendard, serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-elevated);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-secondary);
+  --color-ink-3: var(--ink-muted);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+}
+
+@layer base {
+  :root {
+    /* 종이색 바탕 + 먹색 글자 + 감색 포인트 하나 */
+    --bg-light: #f4f1ea;
+    --bg-dark: #121110;
+    --surface-light: #eae6dc;
+    --surface-dark: #1c1a17;
+    --surface-elevated-light: #fbf9f4;
+    --surface-elevated-dark: #24221e;
+    --ink-light: #191713;
+    --ink-dark: #f0ebe1;
+    --ink-secondary-light: #4f4a42;
+    --ink-secondary-dark: #bbb4a7;
+    --ink-muted-light: #736d62;
+    --ink-muted-dark: #8f897d;
+    --border-light: #dcd6c9;
+    --border-dark: #2d2a26;
+    --border-strong-light: #c2bbab;
+    --border-strong-dark: #47433c;
+    --accent-light: #c9401f;
+    --accent-dark: #ff8259;
+
+    --bg: var(--bg-light);
+    --surface: var(--surface-light);
+    --surface-elevated: var(--surface-elevated-light);
+    --ink: var(--ink-light);
+    --ink-secondary: var(--ink-secondary-light);
+    --ink-muted: var(--ink-muted-light);
+    --border: var(--border-light);
+    --border-strong: var(--border-strong-light);
+    --accent: var(--accent-light);
+
+    @media (prefers-color-scheme: dark) {
+      --bg: var(--bg-dark);
+      --surface: var(--surface-dark);
+      --surface-elevated: var(--surface-elevated-dark);
+      --ink: var(--ink-dark);
+      --ink-secondary: var(--ink-secondary-dark);
+      --ink-muted: var(--ink-muted-dark);
+      --border: var(--border-dark);
+      --border-strong: var(--border-strong-dark);
+      --accent: var(--accent-dark);
+    }
+
+    /* 테마 토글은 <meta name="color-scheme"> 값을 바꾸고, 여기서 그 값을 따라간다 */
+    color-scheme: light dark;
+
+    &:has(> head > meta[name="color-scheme"][content="dark"]) {
+      color-scheme: dark;
+    }
+
+    &:has(> head > meta[name="color-scheme"][content="light"]) {
+      color-scheme: light;
+    }
+
+    @supports (color: light-dark(white, black)) {
+      --bg: light-dark(var(--bg-light), var(--bg-dark));
+      --surface: light-dark(var(--surface-light), var(--surface-dark));
+      --surface-elevated: light-dark(
+        var(--surface-elevated-light),
+        var(--surface-elevated-dark)
+      );
+      --ink: light-dark(var(--ink-light), var(--ink-dark));
+      --ink-secondary: light-dark(
+        var(--ink-secondary-light),
+        var(--ink-secondary-dark)
+      );
+      --ink-muted: light-dark(var(--ink-muted-light), var(--ink-muted-dark));
+      --border: light-dark(var(--border-light), var(--border-dark));
+      --border-strong: light-dark(
+        var(--border-strong-light),
+        var(--border-strong-dark)
+      );
+      --accent: light-dark(var(--accent-light), var(--accent-dark));
+    }
+
+    accent-color: var(--accent);
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+    /* 한글은 단어 중간에서 끊기면 읽기 어렵다 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  dd,
+  li {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 26%, transparent);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  code,
+  kbd {
+    font-family: var(--font-mono);
+  }
+}
+
+/* 섹션·항목 위에 붙는 작은 머리말 */
+.eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-muted);
+}
+
+/* 큰 숫자: 세리프 숫자 + 작게 붙는 한글 단위 */
+.figure-value {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums;
+}
+
+.figure-unit {
+  font-family: var(--font-sans);
+  font-size: 0.3em;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-left: 0.35em;
+  color: var(--unit-color, var(--ink-secondary));
+}
+
+/* 텍스트 링크 밑줄 */
+.link-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  transition:
+    text-decoration-color 0.15s,
+    color 0.15s;
+}
+
+.link-underline:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* 스크롤하면 살짝 올라오며 나타난다. 지원 브라우저 + 움직임 허용일 때만 */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .reveal {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @keyframes grow-scroll-progress {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    #portfolio-scroll-progress {
+      transform-origin: 0 50%;
+      animation: grow-scroll-progress auto linear;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+/* 슬라이더 */
+input[type="range"].slider {
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"].slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: var(--border-strong);
+}
+
+input[type="range"].slider::-moz-range-track {
+  height: 2px;
+  background: var(--border-strong);
+}
+
+input[type="range"].slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+input[type="range"].slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+/* 네이티브 <dialog>: 열고 닫을 때의 전환 */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background-color: rgb(12 11 10 / 0);
+  backdrop-filter: blur(0px);
+  transition-property: background-color, backdrop-filter, display, overlay;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+dialog {
+  opacity: 0;
+  background-color: var(--surface-elevated);
+  color: var(--ink);
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(10px) scale(0.985);
+  }
+}
+
+:is(dialog[open]):where(:not([data-closing])) {
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(0) scale(1);
+
+    @starting-style {
+      transform: translateY(10px) scale(0.985);
+    }
+  }
+
+  &::backdrop {
+    background-color: rgb(12 11 10 / 0.6);
+    backdrop-filter: blur(6px);
+
+    @starting-style {
+      background-color: rgb(12 11 10 / 0);
+      backdrop-filter: blur(0px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog,
+  dialog::backdrop {
+    transition-duration: 0.1s;
+  }
+}

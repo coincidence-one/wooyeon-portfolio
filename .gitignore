@@ -1,0 +1,29 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependencies & Build outputs
+node_modules
+dist
+dist-ssr
+*.local
+
+# Nested separate repository
+hago-mandal/
+
+# 비공개 메모. 저장소와 배포에 올리지 않는다
+private/
+
+# Environment & Editor
+.env
+.env.*
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
