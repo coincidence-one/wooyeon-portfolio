@@ -40,7 +40,7 @@ Tailwind의 `translate-*`, `scale-*` 클래스가 붙은 요소를 GSAP으로 �
 | --- | --- | --- |
 | [GSAP](https://gsap.com) (ScrollTrigger, SplitText, DrawSVG, CustomEase), [@gsap/react](https://github.com/greensock/react) | 모든 타임라인과 스크롤 연출 | GSAP Standard License (무료) |
 | [Lenis](https://github.com/darkroomengineering/lenis) | 부드러운 스크롤 | MIT |
-| [React Bits](https://reactbits.dev) — Threads, Galaxy, Magnet | 배경 셰이더와 자석 버튼. 소스를 그대로 가져왔다 | MIT + Commons Clause |
+| [React Bits](https://reactbits.dev): Threads, Galaxy, Magnet | 배경 셰이더와 자석 버튼. 소스를 그대로 가져왔다 | MIT + Commons Clause |
 | [Mrs Saint Delafield](https://fonts.google.com/specimen/Mrs+Saint+Delafield), [EMS Society](https://gitlab.com/oskay/svg-fonts) | 서명 글자 윤곽선과 쓰는 순서 | SIL Open Font License 1.1 |
 
 코드를 쓸 때 참고한 에이전트 스킬: [greensock/gsap-skills](https://github.com/greensock/gsap-skills) (useGSAP 정리, ScrollTrigger, 성능),

@@ -32,9 +32,9 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     subtitle: '웹 · iOS · Android',
     headline: '조지아 한인을 위한 중고거래 서비스',
     lede: '카톡방과 페이스북 그룹에서 하던 거래를 옮겨 왔습니다. 웹, 서버, 모바일 앱을 풀스택으로 설계했습니다.',
-    period: '2026.01 — 현재 · 운영 중',
+    period: '2026.01 ~ 현재 · 운영 중',
     role: '풀스택 설계와 검증 (웹 · 서버 · 모바일) · 현재 1인 운영',
-    aiNote: 'Claude Code로 구현 · 병합 PR 456개 중 312개',
+    aiNote: '구현은 Claude Code와 나눠 진행 · 병합 PR 456개 중 312개',
     liveUrl: 'https://peachmarket.app',
     appStoreUrl: 'https://apps.apple.com/kr/app/peach-market/id6761296162',
     stack: [
@@ -60,7 +60,7 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
       {
         title: '실시간 채팅',
         summary: '읽음 표시, 스와이프 답장, 오프라인 전송과 재연결. Socket.io.',
-        reference: '2026.02 — 04 · PR #12 · #104 · #132 · #222',
+        reference: '2026.02 ~ 04 · PR #12 · #104 · #132 · #222',
       },
       {
         title: 'iOS 앱 출시',
@@ -106,19 +106,19 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     gallery: [
       {
         src: assetUrl('/assets/projects/peachmarket-web-ai-fill.png'),
-        caption: '웹 — 사진 한 장으로 “AI로 채우기”',
+        caption: '웹 · 사진 한 장으로 “AI로 채우기”',
       },
       {
         src: assetUrl('/assets/projects/peachmarket-bulk-review.png'),
-        caption: '앱 — 사진 여러 장으로 만든 매물 초안 6개',
+        caption: '앱 · 사진 여러 장으로 만든 매물 초안 6개',
       },
       {
         src: assetUrl('/assets/projects/peachmarket-sale-local.png'),
-        caption: '앱 — 카톡에 공유하는 무빙세일 페이지',
+        caption: '앱 · 카톡에 공유하는 무빙세일 페이지',
       },
       {
         src: assetUrl('/assets/projects/peachmarket-live-city.jpg'),
-        caption: '운영 중인 웹 — 둘루스 지역 랜딩',
+        caption: '운영 중인 웹 · 둘루스 지역 랜딩',
       },
       {
         src: assetUrl('/assets/projects/peachmarket-live-mobile.jpg'),
@@ -126,7 +126,7 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
       },
       {
         src: assetUrl('/assets/projects/peachmarket-live-home.jpg'),
-        caption: '운영 중인 웹 — 홈',
+        caption: '운영 중인 웹 · 홈',
       },
     ],
   },
@@ -139,7 +139,7 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     lede: '가입 없이 링크만 열면 시작합니다. 우주선을 타고 다른 행성으로 건너가 사람들을 만납니다.',
     period: '2026.11 · 운영 중',
     role: '기획 · 설계 · 운영 (1인)',
-    aiNote: 'Claude Code로 구현 · 커밋 67개 중 66개',
+    aiNote: '구현은 Claude Code와 나눠 진행 · 커밋 67개 중 66개',
     liveUrl: 'https://tinoy-orbits.vercel.app',
     stack: [
       'JavaScript',
@@ -151,7 +151,7 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     ],
     stories: [
       {
-        title: 'Realtime 한도 안의 위치 동기화',
+        title: '실시간 위치 동기화',
         summary:
           '행성별 채널 분리. 사람이 몰리면 위치 전송을 초당 5회에서 1회로 줄이고 180명부터 대기열.',
       },
@@ -216,7 +216,7 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     lede: '2023년에 멈췄던 프로젝트를 2026년 11월에 AI 에이전트와 다시 잡아 완성했습니다.',
     period: '2023.09 시작 · 2026.11 완성',
     role: '기획 · 설계 (1인)',
-    aiNote: 'AI 에이전트로 구현',
+    aiNote: '구현은 AI 에이전트와 나눠 진행',
     liveUrl: 'https://hago-mandal.vercel.app',
     repoUrl: 'https://github.com/coincidence-one/hago-mandal',
     stack: [
@@ -276,27 +276,27 @@ export const FLAGSHIP_PROJECTS: FlagshipProject[] = [
     gallery: [
       {
         src: assetUrl('/assets/projects/hago-mandal-hero.jpg'),
-        caption: 'ACT 01 — 투구 사진 12장',
+        caption: 'ACT 01 · 투구 사진 12장',
       },
       {
         src: assetUrl('/assets/projects/hago-mandal-pitch.jpg'),
-        caption: 'ACT 02 — 18.44m를 날아가는 공',
+        caption: 'ACT 02 · 18.44m를 날아가는 공',
       },
       {
         src: assetUrl('/assets/projects/hago-mandal-homerun.jpg'),
-        caption: 'ACT 05 — 138m 홈런 궤적',
+        caption: 'ACT 05 · 138m 홈런 궤적',
       },
       {
         src: assetUrl('/assets/projects/hago-mandal-pillars.jpg'),
-        caption: 'ACT 06 — 오타니 만다라트의 가운데 블록',
+        caption: 'ACT 06 · 오타니 만다라트의 가운데 블록',
       },
       {
         src: assetUrl('/assets/projects/hago-mandal-studio.jpg'),
-        caption: '플래너 — 템플릿과 오늘의 1구',
+        caption: '플래너 · 템플릿과 오늘의 1구',
       },
       {
         src: assetUrl('/assets/projects/hago-mandal-grid.jpg'),
-        caption: '플래너 — 81칸 전체',
+        caption: '플래너 · 81칸 전체',
       },
     ],
   },
