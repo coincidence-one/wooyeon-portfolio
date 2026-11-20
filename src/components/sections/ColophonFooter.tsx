@@ -50,7 +50,10 @@ export const ColophonFooter = ({ onCopyEmail }: ColophonFooterProps) => {
         const signature = gsap.timeline({
           scrollTrigger: {
             trigger: '[data-footer-signature]',
-            start: 'top 80%',
+            // 서명은 페이지 맨 끝에 있어서, 폰에서는 끝까지 내려가도 위쪽이
+            // 화면의 80% 선 위로 올라오지 못한다. 그러면 영영 그려지지 않으므로
+            // 화면에 들어서자마자 쓰기 시작한다.
+            start: 'top 95%',
             once: true,
           },
         });
