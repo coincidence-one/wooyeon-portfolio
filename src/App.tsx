@@ -138,7 +138,12 @@ export const App = () => {
   }, []);
 
   return (
-    <div ref={pageRef} className="relative isolate min-h-screen text-ink">
+    // 배경색을 여기에도 칠한다. isolate가 쌓임 맥락을 새로 만들어서, body의 배경은
+    // 마우스 원의 색 반전(mix-blend-mode)에 섞이지 않는다.
+    <div
+      ref={pageRef}
+      className="relative isolate min-h-screen bg-bg text-ink"
+    >
       <WorldBackdrop />
       <IntroCurtain />
       <CursorFollower />
